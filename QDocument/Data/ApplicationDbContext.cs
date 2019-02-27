@@ -14,6 +14,7 @@ namespace QDocument.Data
         {
         }
         public DbSet<QDocument.Models.Document> Documents { get; set; }
+        public DbSet<QDocument.Models.User> User { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
