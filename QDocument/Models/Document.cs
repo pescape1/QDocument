@@ -22,7 +22,8 @@ namespace QDocument.Models
         [StringLength(50, MinimumLength = 3, ErrorMessage = "{0} must be between 3 and 50 characters lenght.")]
         public string Title { get; set; }
         [Display(Name = "Document Type")]
-        [EnumDataType(typeof(DocumentType), ErrorMessage = "Valid Document Type value is required.")]
+        [Required(ErrorMessage = "Valid Document Type value is required.")]
+        [EnumDataType(typeof(DocumentType))]
         public DocumentType DocumentType { get; set; }
         [Required(ErrorMessage = "Creation Date is required.")]
         [DataType(DataType.Date)]

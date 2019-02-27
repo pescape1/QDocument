@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using QDocument.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using QDocument.Models;
 
 namespace QDocument
 {
@@ -38,7 +39,7 @@ namespace QDocument
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<User>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -51,6 +52,16 @@ namespace QDocument
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
             });
+            // Set up Identity services 
+            /*services.AddIdentity<User, IdentityRole>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            });*/
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
