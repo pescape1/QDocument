@@ -39,11 +39,20 @@ namespace QDocument
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<User>()
+            //services.AddDefaultIdentity<User>()
+            services.AddIdentity<User, IdentityRole>(options =>
+                {
+                    // Password settings
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
+                })
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.Configure<IdentityOptions>(options =>
+            /*services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
                 options.Password.RequireDigit = false;
@@ -52,8 +61,9 @@ namespace QDocument
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
             });
+            //services.AddIdentityCore<IdentityRole>();
             // Set up Identity services 
-            /*services.AddIdentity<User, IdentityRole>(options =>
+            services.AddIdentity<User, IdentityRole>(options =>
             {
                 // Password settings
                 options.Password.RequireDigit = false;

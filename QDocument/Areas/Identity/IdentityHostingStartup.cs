@@ -16,15 +16,7 @@ namespace QDocument.Areas.Identity
         public void Configure(IWebHostBuilder builder)
         {
             builder.ConfigureServices((context, services) => {
-                /*services.AddIdentity<User, IdentityRole>(options =>
-                {
-                    // Password settings
-                    options.Password.RequireDigit = false;
-                    options.Password.RequiredLength = 6;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequireLowercase = false;
-                });*/
+
             });
         }
     }
