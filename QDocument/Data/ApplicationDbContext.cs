@@ -21,5 +21,7 @@ namespace QDocument.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Document>().ToTable("Document");
         }
+
+        public DbSet<QDocument.Models.Job> Job { get; set; }
     }
 }

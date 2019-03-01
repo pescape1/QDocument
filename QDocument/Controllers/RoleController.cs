@@ -62,7 +62,7 @@ namespace QDocument.Controllers
                 }
             }
 
-            return View(name);
+            return View((object) name);
         }
 
         public async Task<IActionResult> Edit(string id)
