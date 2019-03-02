@@ -10,8 +10,8 @@ using QDocument.Data;
 namespace QDocument.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190227232312_UserEntity")]
-    partial class UserEntity
+    [Migration("20190302164323_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -143,11 +143,9 @@ namespace QDocument.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.Property<string>("LoginProvider")
-                        .HasMaxLength(128);
+                    b.Property<string>("LoginProvider");
 
-                    b.Property<string>("ProviderKey")
-                        .HasMaxLength(128);
+                    b.Property<string>("ProviderKey");
 
                     b.Property<string>("ProviderDisplayName");
 
@@ -178,11 +176,9 @@ namespace QDocument.Data.Migrations
                 {
                     b.Property<string>("UserId");
 
-                    b.Property<string>("LoginProvider")
-                        .HasMaxLength(128);
+                    b.Property<string>("LoginProvider");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(128);
+                    b.Property<string>("Name");
 
                     b.Property<string>("Value");
 
@@ -210,9 +206,32 @@ namespace QDocument.Data.Migrations
                     b.ToTable("Document");
                 });
 
+            modelBuilder.Entity("QDocument.Models.Job", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ShortTitle")
+                        .IsRequired()
+                        .HasMaxLength(15);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Job");
+                });
+
             modelBuilder.Entity("QDocument.Models.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<int>("JobID");
+
+                    b.HasIndex("JobID");
 
                     b.HasDiscriminator().HasValue("User");
                 });
@@ -259,6 +278,14 @@ namespace QDocument.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("QDocument.Models.User", b =>
+                {
+                    b.HasOne("QDocument.Models.Job", "Job")
+                        .WithMany("Users")
+                        .HasForeignKey("JobID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

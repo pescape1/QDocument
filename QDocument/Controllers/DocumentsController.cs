@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +16,12 @@ namespace QDocument.Controllers
     public class DocumentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private UserManager<User> userManager;
 
-        public DocumentsController(ApplicationDbContext context)
+        public DocumentsController(ApplicationDbContext context, UserManager<User> userMgr)
         {
             _context = context;
+            userManager = userMgr;
         }
 
         // GET: Documents
@@ -80,6 +83,7 @@ namespace QDocument.Controllers
             {
                 return NotFound();
             }
+            PopulateJobsDropDownList();
             return View(document);
         }
 
@@ -150,6 +154,14 @@ namespace QDocument.Controllers
         private bool DocumentExists(int id)
         {
             return _context.Documents.Any(e => e.ID == id);
+        }
+
+        private void PopulateJobsDropDownList()
+        {
+            var usersQuery = from u in userManager.Users
+                             orderby u.UserName
+                            select u;
+            ViewBag.UserList = new SelectList(usersQuery.AsNoTracking(), "Id", "UserName");
         }
     }
 }

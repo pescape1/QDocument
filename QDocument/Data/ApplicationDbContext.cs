@@ -13,15 +13,16 @@ namespace QDocument.Data
             : base(options)
         {
         }
+        
         public DbSet<QDocument.Models.Document> Documents { get; set; }
         public DbSet<QDocument.Models.User> User { get; set; }
+        public DbSet<QDocument.Models.Job> Jobs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Document>().ToTable("Document");
+            modelBuilder.Entity<Job>().ToTable("Job");
         }
-
-        public DbSet<QDocument.Models.Job> Job { get; set; }
     }
 }

@@ -8,13 +8,17 @@ namespace QDocument.ViewModels
 {
     public class CreateVm
     {
-        [Required]
+        [Required(ErrorMessage = "Username is required")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "Select a job")]
+        [Display(Name = "Job position")]
+        public int JobID { get; set; }
     }
 }

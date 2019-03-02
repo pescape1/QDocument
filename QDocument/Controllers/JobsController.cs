@@ -24,7 +24,7 @@ namespace QDocument.Controllers
         // GET: Jobs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Job.ToListAsync());
+            return View(await _context.Jobs.ToListAsync());
         }
 
         // GET: Jobs/Details/5
@@ -35,7 +35,7 @@ namespace QDocument.Controllers
                 return NotFound();
             }
 
-            var job = await _context.Job
+            var job = await _context.Jobs
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (job == null)
             {
@@ -75,7 +75,7 @@ namespace QDocument.Controllers
                 return NotFound();
             }
 
-            var job = await _context.Job.FindAsync(id);
+            var job = await _context.Jobs.FindAsync(id);
             if (job == null)
             {
                 return NotFound();
@@ -126,7 +126,7 @@ namespace QDocument.Controllers
                 return NotFound();
             }
 
-            var job = await _context.Job
+            var job = await _context.Jobs
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (job == null)
             {
@@ -141,15 +141,15 @@ namespace QDocument.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var job = await _context.Job.FindAsync(id);
-            _context.Job.Remove(job);
+            var job = await _context.Jobs.FindAsync(id);
+            _context.Jobs.Remove(job);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool JobExists(int id)
         {
-            return _context.Job.Any(e => e.ID == id);
+            return _context.Jobs.Any(e => e.ID == id);
         }
     }
 }

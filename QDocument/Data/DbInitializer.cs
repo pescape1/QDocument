@@ -1,4 +1,6 @@
-﻿using QDocument.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using QDocument.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +13,20 @@ namespace QDocument.Data
         public static void Initialize(ApplicationDbContext context)
         {
             // Look for any documents.
-            if (context.Documents.Any())
+            if (context.Jobs.Any())
             {
                 return;   // DB has been seeded
             }
+
+            var jobs = new Job[]
+            {
+                new Job { Title = "Quality Manager", ShortTitle = "QA Mgr."}
+            };
+            foreach (Job j in jobs)
+            {
+                context.Jobs.Add(j);
+            }
+            context.SaveChanges();
 
             var documents = new Document[]
             {

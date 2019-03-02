@@ -1,18 +1,17 @@
 ﻿@model QDocument.Models.Document
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
-</head>
-<body>
+@section Styles {
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+}
+@{
+    ViewData["Title"] = "Edit";
+}
 
 <h4>Document</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
@@ -34,6 +33,15 @@
                 <span asp-validation-for="CreationDate" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label for="uList" class="control-label">Approval Scheme</label>
+                <select id="uList" class="form-control" multiple="multiple">
+                    @foreach (var user in ViewBag.UserList)
+                    {
+                        <option value="@user.Value">@user.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -46,6 +54,11 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#uList").select2();
+        });
+    </script>
 }
-</body>
-</html>
+

@@ -16,5 +16,7 @@ namespace QDocument.Models
         [Display(Name = "Short Title")]
         [StringLength(15, MinimumLength = 3, ErrorMessage = "{0} must be between 3 and 15 characters lenght.")]
         public string ShortTitle { get; set; }
+
+        public ICollection<User> Users { get; set; }
     }
 }

@@ -227,6 +227,10 @@ namespace QDocument.Data.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
+                    b.Property<int>("JobID");
+
+                    b.HasIndex("JobID");
+
                     b.HasDiscriminator().HasValue("User");
                 });
 
@@ -272,6 +276,14 @@ namespace QDocument.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("QDocument.Models.User", b =>
+                {
+                    b.HasOne("QDocument.Models.Job", "Job")
+                        .WithMany("Users")
+                        .HasForeignKey("JobID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
