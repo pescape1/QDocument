@@ -158,10 +158,10 @@ namespace QDocument.Controllers
 
         private void PopulateJobsDropDownList()
         {
-            var usersQuery = from u in userManager.Users
-                             orderby u.UserName
-                            select u;
-            ViewBag.UserList = new SelectList(usersQuery.AsNoTracking(), "Id", "UserName");
+            var jobsQuery = from j in _context.Jobs
+                            orderby j.Title
+                            select j;
+            ViewBag.JobList = new SelectList(jobsQuery.AsNoTracking(), "ID", "Title");
         }
     }
 }

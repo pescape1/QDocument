@@ -33,13 +33,16 @@
                 <span asp-validation-for="CreationDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="uList" class="control-label">Approval Scheme</label>
-                <select id="uList" class="form-control" multiple="multiple">
-                    @foreach (var user in ViewBag.UserList)
+                <label for="jobList" class="control-label">Approval Scheme</label>
+                <select id="jobList" name="jobList[]" class="form-control" multiple="multiple">
+                    @foreach (var job in ViewBag.JobList)
                     {
-                        <option value="@user.Value">@user.Text</option>
+                        <option value="@job.Value">@job.Text</option>
                     }
                 </select>
+            </div>
+            <div id="app">
+                <hello :jobList="'#jobList'"></hello>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -55,9 +58,10 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/dist/main.js"></script>
     <script>
         $(document).ready(function () {
-            $("#uList").select2();
+            $("#jobList").select2();
         });
     </script>
 }
