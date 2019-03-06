@@ -162,6 +162,7 @@ namespace QDocument.Controllers
                             orderby j.Title
                             select j;
             ViewBag.JobList = new SelectList(jobsQuery.AsNoTracking(), "ID", "Title");
+            ViewBag.jsList = jobsQuery.ToArray();
         }
     }
 }

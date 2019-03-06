@@ -34,7 +34,7 @@
             </div>
             <div class="form-group">
                 <label for="jobList" class="control-label">Approval Scheme</label>
-                <select id="jobList" name="jobList[]" class="form-control" multiple="multiple">
+                <select id="jobList" class="form-control" multiple="multiple">
                     @foreach (var job in ViewBag.JobList)
                     {
                         <option value="@job.Value">@job.Text</option>
@@ -42,7 +42,7 @@
                 </select>
             </div>
             <div id="app">
-                <hello :jobList="'#jobList'"></hello>
+                <approval-users :jlist="'#jobList'"></approval-users>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
