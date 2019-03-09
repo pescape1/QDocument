@@ -30,5 +30,7 @@ namespace QDocument.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Creation Date")]
         public DateTime CreationDate { get; set; }
+
+        public ICollection<DocumentApproval> ApprovedBy { get; set; }
     }
 }

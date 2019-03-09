@@ -423,7 +423,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "build": "webpack --config build/webpack.config.js"
+    "build": "webpack --config build/webpack.config.js",
+    "watch": "webpack --config build/webpack.config.js --watch"
   },
   "author": "",
   "license": "ISC"

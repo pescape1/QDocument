@@ -7,29 +7,39 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using QDocument.Models;
 
 namespace QDocument.Controllers
 {
     [ApiController]
-    public class ApiController : ControllerBase
+    [Produces("application/json")]
+    public class ApiDocController : ControllerBase
     {
         private UserManager<User> userManager;
 
-        public ApiController(UserManager<User> userMgr)
+        public ApiDocController(UserManager<User> userMgr)
         {
             userManager = userMgr;
         }
 
-        [HttpGet]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("api/GetApprovalUsers")]
-        public IActionResult GetApprovalUsers()
+        //[HttpGet("{jobsList}")]
+        public IActionResult GetApprovalUsers(string jobList)
         {
-            var usersQuery = from u in userManager.Users
-                             orderby u.Email
-                            select u;
-            var userList = new SelectList(usersQuery.AsNoTracking(), "Id", "Email");
-            return this.Ok(userList);
+            List<string> jList = JsonConvert.DeserializeObject<List<string>>(jobList);
+            var users = userManager.Users
+                .Include(u => u.Job)
+                .AsNoTracking()
+                .Where(u => jList.Contains(u.JobID.ToString()))
+                .Select(u => new
+                {
+                    id = u.Id,
+                    FullName = u.FullName(),
+                    JobTitle = u.Job.Title
+                }).ToArray();
+            return Ok(users);
         }
     }
 }

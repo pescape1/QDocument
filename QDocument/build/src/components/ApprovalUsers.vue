@@ -1,11 +1,12 @@
 ﻿<template>
     <div>
-        <table>
+        <table class="table table-striped">
             <tr v-if="!users.length">
                 <td colspan="1">No users.</td>
             </tr>
             <tr v-for="(user, index) in users">
-                <td><span>{{ user.text }}</span></td>
+                <td><span>{{ user.fullName }}</span></td>
+                <td><span>{{ user.jobTitle }}</span></td>
             </tr>
         </table>
     </div>
@@ -30,7 +31,7 @@
             var vm = this;
             $(this.jlist)
                 .on('change', vm, function (e) {
-                    e.data.asigna($(this).val())
+                    e.data.asigna($(this).val());
                     //Vue.set(this.$data, 'users', $(this.jlist.val()));
                     //this.users = $(this.jlist.val()).slice(0);
                     //console.log(this.users);
@@ -51,15 +52,26 @@
             
         },*/
         methods: {
-            asigna: function (value) {
-                //this.users = value.slice(0);
+            asigna: function (jobList) {
+                console.log(JSON.stringify(jobList));
                 this.users = [];
+                this.$http
+                    .get('/api/GetApprovalUsers', { params: { jobList: JSON.stringify(jobList) }})
+                    .then((res) => {
+                        for (var i = 0; i < res.body.length; i++) {
+                            this.users.push(res.body[i]);
+                        }/**/
+                        //console.log("Mensaje3: "+res.body);
+                    })
+                    .catch((ex) => console.log(ex))
+                //this.users = value.slice(0);
+                /*this.users = [];
                 for (var i = 0; i < value.length; i++) {
                     this.users.push({
                         'text': value[i]
                     })
                 }
-                console.log(this.users);
+                console.log(this.users);*/
             }
         }
     }

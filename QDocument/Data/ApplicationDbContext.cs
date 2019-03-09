@@ -13,7 +13,7 @@ namespace QDocument.Data
             : base(options)
         {
         }
-        
+
         public DbSet<QDocument.Models.Document> Documents { get; set; }
         public DbSet<QDocument.Models.User> User { get; set; }
         public DbSet<QDocument.Models.Job> Jobs { get; set; }
@@ -23,6 +23,9 @@ namespace QDocument.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Document>().ToTable("Document");
             modelBuilder.Entity<Job>().ToTable("Job");
+
+            //modelBuilder.Entity<DocumentApproval>()
+            //    .HasKey(c => new { c.DocumentID, c.UserId });
         }
     }
 }
