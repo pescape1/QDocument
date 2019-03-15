@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QDocument.Data;
+using QDocument.Data.Contracts;
 using QDocument.Models;
 
 namespace QDocument.Controllers
@@ -15,19 +16,21 @@ namespace QDocument.Controllers
     [Authorize]
     public class DocumentsController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private UserManager<User> userManager;
+        //private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> userManager;
+        private IRepositoryWrapper _repoWrapper;
 
-        public DocumentsController(ApplicationDbContext context, UserManager<User> userMgr)
+        public DocumentsController(UserManager<User> userMgr, IRepositoryWrapper repoWrapper) //ApplicationDbContext context, 
         {
-            _context = context;
+            //_context = context;
             userManager = userMgr;
+            _repoWrapper = repoWrapper;
         }
 
         // GET: Documents
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Documents.ToListAsync());
+            return View(await _repoWrapper.Document.GetAllDocumentsAsync());
         }
 
         // GET: Documents/Details/5
@@ -38,8 +41,8 @@ namespace QDocument.Controllers
                 return NotFound();
             }
 
-            var document = await _context.Documents
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var document = await _repoWrapper.Document.GetDocumentByIdAsync((int) id);
+
             if (document == null)
             {
                 return NotFound();
@@ -49,8 +52,9 @@ namespace QDocument.Controllers
         }
 
         // GET: Documents/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            await PopulateJobsDropDownList();
             return View();
         }
 
@@ -63,8 +67,8 @@ namespace QDocument.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(document);
-                await _context.SaveChangesAsync();
+                await _repoWrapper.Document.CreateDocumentAsync(document);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(document);
@@ -78,12 +82,13 @@ namespace QDocument.Controllers
                 return NotFound();
             }
 
-            var document = await _context.Documents.FindAsync(id);
+            var document = await _repoWrapper.Document.GetDocumentByIdAsync((int) id);
+
             if (document == null)
             {
                 return NotFound();
             }
-            PopulateJobsDropDownList();
+            await PopulateJobsDropDownList();
             return View(document);
         }
 
@@ -103,12 +108,11 @@ namespace QDocument.Controllers
             {
                 try
                 {
-                    _context.Update(document);
-                    await _context.SaveChangesAsync();
+                    await _repoWrapper.Document.UpdateDocumentAsync(document);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DocumentExists(document.ID))
+                    if (!_repoWrapper.Document.DocumentExists(document.ID))
                     {
                         return NotFound();
                     }
@@ -130,8 +134,8 @@ namespace QDocument.Controllers
                 return NotFound();
             }
 
-            var document = await _context.Documents
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var document = await _repoWrapper.Document.GetDocumentByIdAsync((int) id);
+
             if (document == null)
             {
                 return NotFound();
@@ -145,24 +149,16 @@ namespace QDocument.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var document = await _context.Documents.FindAsync(id);
-            _context.Documents.Remove(document);
-            await _context.SaveChangesAsync();
+            var document = await _repoWrapper.Document.GetDocumentByIdAsync(id);
+            await _repoWrapper.Document.DeleteDocumentAsync(document);
+
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DocumentExists(int id)
+        private async Task PopulateJobsDropDownList()
         {
-            return _context.Documents.Any(e => e.ID == id);
-        }
-
-        private void PopulateJobsDropDownList()
-        {
-            var jobsQuery = from j in _context.Jobs
-                            orderby j.Title
-                            select j;
-            ViewBag.JobList = new SelectList(jobsQuery.AsNoTracking(), "ID", "Title");
-            ViewBag.jsList = jobsQuery.ToArray();
+            IEnumerable<Job> jobsQuery = await _repoWrapper.Job.GetAllJobsAsync();
+            ViewBag.JobList = new SelectList(jobsQuery, "ID", "Title");
         }
     }
 }

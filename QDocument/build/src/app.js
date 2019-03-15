@@ -4,7 +4,7 @@ import Resource from 'vue-resource'
 
 Vue.use(Resource)
 
-Vue.component('approval-users1', require('./components/ApprovalUsers.vue').default);
+Vue.component('approval-users', require('./components/ApprovalUsers.vue').default);
 
 new Vue({
   el: '#app',
