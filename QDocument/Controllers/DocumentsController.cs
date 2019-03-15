@@ -17,13 +17,13 @@ namespace QDocument.Controllers
     public class DocumentsController : Controller
     {
         //private readonly ApplicationDbContext _context;
-        private readonly UserManager<User> userManager;
+        //private readonly UserManager<User> userManager;
         private IRepositoryWrapper _repoWrapper;
 
-        public DocumentsController(UserManager<User> userMgr, IRepositoryWrapper repoWrapper) //ApplicationDbContext context, 
+        public DocumentsController(IRepositoryWrapper repoWrapper) //ApplicationDbContext context,UserManager<User> userMgr,  
         {
             //_context = context;
-            userManager = userMgr;
+            //userManager = userMgr;
             _repoWrapper = repoWrapper;
         }
 
@@ -157,7 +157,7 @@ namespace QDocument.Controllers
 
         private async Task PopulateJobsDropDownList()
         {
-            IEnumerable<Job> jobsQuery = await _repoWrapper.Job.GetAllJobsAsync();
+            var jobsQuery = await _repoWrapper.Job.GetAllJobsAsync();
             ViewBag.JobList = new SelectList(jobsQuery, "ID", "Title");
         }
     }

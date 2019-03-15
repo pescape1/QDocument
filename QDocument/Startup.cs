@@ -14,7 +14,8 @@ using QDocument.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using QDocument.Models;
-using QDocument.Extensions;
+using QDocument.Data.Contracts;
+using QDocument.Data.Repository;
 
 namespace QDocument
 {
@@ -54,7 +55,7 @@ namespace QDocument
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.ConfigureRepositoryWrapper();
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
