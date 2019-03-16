@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QDocument.Data;
+using QDocument.Data.Contracts;
 using QDocument.Models;
 using QDocument.ViewModels;
 
@@ -20,6 +21,7 @@ namespace QDocument.Controllers
     public class SuperAdminController : Controller
     {
         private UserManager<User> userManager;
+        private IRepositoryWrapper _repoWrapper;
         private IUserValidator<User> userValidator;
         private IPasswordValidator<User> passwordValidator;
         private IPasswordHasher<User> passwordHasher;
@@ -30,17 +32,17 @@ namespace QDocument.Controllers
             Email = "testForPassword@test.test",
             JobID = 0
         };
-        private ApplicationDbContext _context;
 
         public SuperAdminController(UserManager<User> userMgr,
+            IRepositoryWrapper repoWrapper,
             IUserValidator<User> userValid, IPasswordValidator<User> passValid,
-            IPasswordHasher<User> passHasher, ApplicationDbContext context)
+            IPasswordHasher<User> passHasher)
         {
             userManager = userMgr;
+            _repoWrapper = repoWrapper;
             userValidator = userValid;
             passwordValidator = passValid;
             passwordHasher = passHasher;
-            _context = context;
         }
 
         // GET: /<controller>/ 
@@ -49,9 +51,9 @@ namespace QDocument.Controllers
             return View(userManager.Users);
         }
 
-        public ViewResult Create()
+        public async Task<ViewResult> Create()
         {
-            PopulateJobsDropDownList();
+            await PopulateJobsDropDownList();
             return View();
         }
 
@@ -63,7 +65,9 @@ namespace QDocument.Controllers
             {
                 User user = new User
                 {
-                    UserName = createVm.Name,
+                    FirstName = createVm.FirstName,
+                    LastName = createVm.LastName,
+                    UserName = createVm.Email,
                     Email = createVm.Email,
                     JobID = createVm.JobID
                 };
@@ -82,7 +86,7 @@ namespace QDocument.Controllers
                     }
                 }
             }
-            PopulateJobsDropDownList(createVm.JobID);
+            await PopulateJobsDropDownList(createVm.JobID);
             return View(createVm);
         }
 
@@ -124,7 +128,7 @@ namespace QDocument.Controllers
 
             if (user != null)
             {
-                PopulateJobsDropDownList(user.JobID);
+                await PopulateJobsDropDownList(user.JobID);
                 return View(user);
             }
             else
@@ -137,7 +141,7 @@ namespace QDocument.Controllers
         [ValidateAntiForgeryToken]
         // the names of its parameters must be the same as the property of the User class if we use asp-for in the view 
         // otherwise form values won't be passed properly 
-        public async Task<IActionResult> Edit(string id, string userName, string email, string password, int JobID)
+        public async Task<IActionResult> Edit(string id, string userName, string firstName, string lastName, string email, string password, int JobID)
         {
             Boolean updateInfo = false;
             User user = await userManager.FindByIdAsync(id);
@@ -145,14 +149,16 @@ namespace QDocument.Controllers
             if (user != null)
             {
                 // Validate UserName and Email  
-                user.UserName = userName; // UserName won't be changed in the database until UpdateAsync is executed successfully 
+                user.UserName = email; // UserName won't be changed in the database until UpdateAsync is executed successfully 
+                user.FirstName = firstName;
+                user.LastName = lastName;
                 user.Email = email;
                 user.JobID = JobID;
 
                 IdentityResult validUseResult = await userValidator.ValidateAsync(userManager, user);
                 if (!validUseResult.Succeeded)
                 {
-                    PopulateJobsDropDownList(user.JobID);
+                    await PopulateJobsDropDownList(user.JobID);
                     AddErrors(validUseResult);
                 }
 
@@ -168,7 +174,7 @@ namespace QDocument.Controllers
                     }
                     else
                     {
-                        PopulateJobsDropDownList(user.JobID);
+                        await PopulateJobsDropDownList(user.JobID);
                         AddErrors(passwordResult);
                     }
                     /* Step 2: Because of DI, IPasswordValidator<User> is injected into the custom password validator.  
@@ -180,7 +186,7 @@ namespace QDocument.Controllers
                     }
                     else
                     {
-                        PopulateJobsDropDownList(user.JobID);
+                        await PopulateJobsDropDownList(user.JobID);
                         AddErrors(validPasswordResult);
                     }
                     updateInfo = passwordResult.Succeeded && validPasswordResult.Succeeded;
@@ -201,26 +207,24 @@ namespace QDocument.Controllers
                     }
                     else
                     {
-                        PopulateJobsDropDownList(user.JobID);
+                        await PopulateJobsDropDownList(user.JobID);
                         AddErrors(result);
                     }
                 }
             }
             else
             {
-                PopulateJobsDropDownList(user.JobID);
+                await PopulateJobsDropDownList(user.JobID);
                 ModelState.AddModelError("", "User Not Found");
             }
 
             return View(user);
         }
 
-        private void PopulateJobsDropDownList(object selectedJob = null)
+        private async Task PopulateJobsDropDownList(object selectedJob = null)
         {
-            var jobsQuery = from j in _context.Jobs
-                                    orderby j.Title
-                                    select j;
-            ViewBag.JobID = new SelectList(jobsQuery.AsNoTracking(), "ID", "Title", selectedJob);
+            var jobsQuery = await _repoWrapper.Job.GetAllJobsAsync();
+            ViewBag.JobID = new SelectList(jobsQuery, "ID", "Title", selectedJob);
         }
     }
 }
