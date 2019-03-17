@@ -1,6 +1,6 @@
 using System;
 
-namespace QDocument.Models
+namespace QDocument.Data.Models
 {
     public class ErrorViewModel
     {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using QDocument.Models;
+using QDocument.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

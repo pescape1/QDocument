@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace QDocument.Models
+namespace QDocument.Data.Models
 {
     public class DocumentApproval
     {

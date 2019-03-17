@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using QDocument.Models;
+using QDocument.Data.Models;
 
-namespace QDocument.ViewModels
+namespace QDocument.Data.ViewModels
 {
     public class EditRoleVm
     {

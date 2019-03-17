@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using QDocument.Data;
-using QDocument.Models;
+using QDocument.Data.Models;
 
 namespace QDocument.Areas.Identity.Pages.Account
 {

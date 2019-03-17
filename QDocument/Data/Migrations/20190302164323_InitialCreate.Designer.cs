@@ -187,7 +187,7 @@ namespace QDocument.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("QDocument.Models.Document", b =>
+            modelBuilder.Entity("QDocument.Data.Models.Document", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -206,7 +206,7 @@ namespace QDocument.Data.Migrations
                     b.ToTable("Document");
                 });
 
-            modelBuilder.Entity("QDocument.Models.Job", b =>
+            modelBuilder.Entity("QDocument.Data.Models.Job", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -225,7 +225,7 @@ namespace QDocument.Data.Migrations
                     b.ToTable("Job");
                 });
 
-            modelBuilder.Entity("QDocument.Models.User", b =>
+            modelBuilder.Entity("QDocument.Data.Models.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -281,9 +281,9 @@ namespace QDocument.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("QDocument.Models.User", b =>
+            modelBuilder.Entity("QDocument.Data.Models.User", b =>
                 {
-                    b.HasOne("QDocument.Models.Job", "Job")
+                    b.HasOne("QDocument.Data.Models.Job", "Job")
                         .WithMany("Users")
                         .HasForeignKey("JobID")
                         .OnDelete(DeleteBehavior.Cascade);

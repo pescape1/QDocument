@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QDocument.Data;
 using QDocument.Data.Contracts;
-using QDocument.Models;
+using QDocument.Data.Models;
 
 namespace QDocument.Controllers
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using QDocument.Models;
+using QDocument.Data.Models;
 
 namespace QDocument.Data
 {
@@ -14,9 +14,9 @@ namespace QDocument.Data
         {
         }
 
-        public DbSet<QDocument.Models.Document> Documents { get; set; }
-        public DbSet<QDocument.Models.User> User { get; set; }
-        public DbSet<QDocument.Models.Job> Jobs { get; set; }
+        public DbSet<QDocument.Data.Models.Document> Documents { get; set; }
+        public DbSet<QDocument.Data.Models.User> User { get; set; }
+        public DbSet<QDocument.Data.Models.Job> Jobs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using QDocument.Data;
-using QDocument.Models;
+using QDocument.Data.Models;
 
 [assembly: HostingStartup(typeof(QDocument.Areas.Identity.IdentityHostingStartup))]
 namespace QDocument.Areas.Identity

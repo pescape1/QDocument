@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace QDocument.Models
+namespace QDocument.Data.Models
 {
     public class User : IdentityUser
     {

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using QDocument.Models;
+using QDocument.Data.Models;
 
 namespace QDocument.Areas.Identity.Pages.Account
 {

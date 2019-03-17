@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using QDocument.Data;
 using QDocument.Data.Contracts;
-using QDocument.Models;
-using QDocument.ViewModels;
+using QDocument.Data.Models;
+using QDocument.Data.ViewModels;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860 
 
@@ -59,20 +54,19 @@ namespace QDocument.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateVm createVm)
+        public async Task<IActionResult> Create(UserInput userInput)
         {
+            User user = new User
+            {
+                UserName = userInput.Email,
+                FirstName = userInput.FirstName,
+                LastName = userInput.LastName,
+                Email = userInput.Email,
+                JobID = userInput.JobID,
+            };
             if (ModelState.IsValid)
             {
-                User user = new User
-                {
-                    FirstName = createVm.FirstName,
-                    LastName = createVm.LastName,
-                    UserName = createVm.Email,
-                    Email = createVm.Email,
-                    JobID = createVm.JobID
-                };
-
-                IdentityResult result = await userManager.CreateAsync(user, createVm.Password);
+                IdentityResult result = await userManager.CreateAsync(user, userInput.Password);
 
                 if (result.Succeeded)
                 {
@@ -86,8 +80,8 @@ namespace QDocument.Controllers
                     }
                 }
             }
-            await PopulateJobsDropDownList(createVm.JobID);
-            return View(createVm);
+            await PopulateJobsDropDownList(user.JobID);
+            return View(user);
         }
 
         private void AddErrors(IdentityResult result)

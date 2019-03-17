@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using QDocument.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using QDocument.Models;
+using QDocument.Data.Models;
 using QDocument.Data.Contracts;
 using QDocument.Data.Repository;
 
