@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using QDocument.Data.Contracts;
 using QDocument.Data.Models;
-using QDocument.Data.ViewModels;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860 
 
@@ -61,6 +60,7 @@ namespace QDocument.Controllers
                 UserName = userInput.Email,
                 FirstName = userInput.FirstName,
                 LastName = userInput.LastName,
+                Address = userInput.Address,
                 Email = userInput.Email,
                 JobID = userInput.JobID,
             };
@@ -135,7 +135,7 @@ namespace QDocument.Controllers
         [ValidateAntiForgeryToken]
         // the names of its parameters must be the same as the property of the User class if we use asp-for in the view 
         // otherwise form values won't be passed properly 
-        public async Task<IActionResult> Edit(string id, string userName, string firstName, string lastName, string email, string password, int JobID)
+        public async Task<IActionResult> Edit(string id, string userName, string firstName, string lastName, string address, string email, string password, int JobID)
         {
             Boolean updateInfo = false;
             User user = await userManager.FindByIdAsync(id);
@@ -146,13 +146,13 @@ namespace QDocument.Controllers
                 user.UserName = email; // UserName won't be changed in the database until UpdateAsync is executed successfully 
                 user.FirstName = firstName;
                 user.LastName = lastName;
+                user.Address = address;
                 user.Email = email;
                 user.JobID = JobID;
 
                 IdentityResult validUseResult = await userValidator.ValidateAsync(userManager, user);
                 if (!validUseResult.Succeeded)
                 {
-                    await PopulateJobsDropDownList(user.JobID);
                     AddErrors(validUseResult);
                 }
 
@@ -168,7 +168,6 @@ namespace QDocument.Controllers
                     }
                     else
                     {
-                        await PopulateJobsDropDownList(user.JobID);
                         AddErrors(passwordResult);
                     }
                     /* Step 2: Because of DI, IPasswordValidator<User> is injected into the custom password validator.  
@@ -180,7 +179,6 @@ namespace QDocument.Controllers
                     }
                     else
                     {
-                        await PopulateJobsDropDownList(user.JobID);
                         AddErrors(validPasswordResult);
                     }
                     updateInfo = passwordResult.Succeeded && validPasswordResult.Succeeded;

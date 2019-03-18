@@ -8,23 +8,28 @@
 
 <form method="post" asp-controller="SuperAdmin" asp-action="Edit" asp-antiforgery="true" class="form-horizontal">
     <div class="form-group">
-        <label class="control-label" asp-for="FirstName">First Name:</label>
+        <label class="control-label" asp-for="FirstName"></label>
         <input class="form-control" asp-for="FirstName" />
         <span asp-validation-for="FirstName" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label class="control-label" asp-for="LastName">Last Name:</label>
+        <label class="control-label" asp-for="LastName"></label>
         <input class="form-control" asp-for="LastName" />
         <span asp-validation-for="LastName" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label class="control-label" asp-for="Email">Email:</label>
+        <label class="control-label" asp-for="Address"></label>
+        <input class="form-control" asp-for="Address" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="control-label" asp-for="Email"></label>
         <input class="form-control" asp-for="Email" />
         <span asp-validation-for="Email" class="text-danger" />
     </div>
     <div class="form-group">
         <!--only hashed passwords are stored in the database and the User class doesn't contain password property-->
-        <label class="control-label" for="password">Password:</label>
+        <label class="control-label" for="password"></label>
         <input class="form-control" name="password" type="password" placeholder="Leave it blank when no changed." />
     </div>
     <div class="form-group">
