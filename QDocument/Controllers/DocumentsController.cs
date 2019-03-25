@@ -41,7 +41,7 @@ namespace QDocument.Controllers
                 return NotFound();
             }
 
-            var document = await _repoWrapper.Document.GetDocumentByIdAsync((int) id);
+            var document = await _repoWrapper.Document.GetDocumentAsync(d => d.ID == id);
 
             if (document == null)
             {
@@ -63,11 +63,11 @@ namespace QDocument.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Title,DocumentType,CreationDate")] Document document)
+        public async Task<IActionResult> Create(int[] jobList, [Bind("Title,DocumentType,CreationDate")] Document document)
         {
             if (ModelState.IsValid)
             {
-                await _repoWrapper.Document.CreateDocumentAsync(document);
+                await _repoWrapper.Document.CreateDocumentAsync(document, jobList);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -82,13 +82,13 @@ namespace QDocument.Controllers
                 return NotFound();
             }
 
-            var document = await _repoWrapper.Document.GetDocumentByIdAsync((int) id);
+            var document = await _repoWrapper.Document.GetDocumentWithApprovalAsync((int) id);
 
             if (document == null)
             {
                 return NotFound();
             }
-            await PopulateJobsDropDownList();
+            await PopulateJobsDropDownList(document.ApprovedBy.Select(a => a.JobID).ToArray());
             return View(document);
         }
 
@@ -97,18 +97,18 @@ namespace QDocument.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,DocumentType,CreationDate")] Document document)
+        public async Task<IActionResult> Edit(int id, int[] jobList, [Bind("ID,Title,DocumentType,CreationDate")] Document document)
         {
             if (id != document.ID)
             {
                 return NotFound();
             }
-
+            
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await _repoWrapper.Document.UpdateDocumentAsync(document);
+                    await _repoWrapper.Document.UpdateDocumentAsync(document, jobList);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,6 +123,7 @@ namespace QDocument.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            await PopulateJobsDropDownList(jobList);
             return View(document);
         }
 
@@ -134,7 +135,7 @@ namespace QDocument.Controllers
                 return NotFound();
             }
 
-            var document = await _repoWrapper.Document.GetDocumentByIdAsync((int) id);
+            var document = await _repoWrapper.Document.GetDocumentAsync(d => d.ID == id);
 
             if (document == null)
             {
@@ -149,16 +150,25 @@ namespace QDocument.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var document = await _repoWrapper.Document.GetDocumentByIdAsync(id);
+            var document = await _repoWrapper.Document.GetDocumentAsync(d => d.ID == id);
             await _repoWrapper.Document.DeleteDocumentAsync(document);
 
             return RedirectToAction(nameof(Index));
         }
 
-        private async Task PopulateJobsDropDownList()
+        private async Task PopulateJobsDropDownList(params int[] selectedValues)
         {
             var jobsQuery = await _repoWrapper.Job.GetAllJobsAsync();
-            ViewBag.JobList = new SelectList(jobsQuery, "ID", "Title");
+            ViewBag.JobList = new MultiSelectList(jobsQuery, "ID", "Title", selectedValues);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<JsonResult> DoesTitleExistAsync(string Title, int ID)
+        {
+            var document = await _repoWrapper.Document.GetDocumentAsync(d => d.Title == Title && d.ID != ID);
+
+            return Json(document.Title == null);
         }
     }
 }

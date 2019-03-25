@@ -18,5 +18,6 @@ namespace QDocument.Data.Models
         public string ShortTitle { get; set; }
 
         public ICollection<User> Users { get; set; }
+        public ICollection<DocumentApproval> DocumentApprovals { get; set; }
     }
 }

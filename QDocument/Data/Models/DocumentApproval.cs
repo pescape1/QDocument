@@ -8,11 +8,10 @@ namespace QDocument.Data.Models
 {
     public class DocumentApproval
     {
-        [Key]
-        public int ID { get; set; }
         public int DocumentID { get; set; }
+        public int JobID { get; set; }
 
         public Document ApprovedDocuments;
-        public User ApprovalUsers;
+        public Job ApprovalJobs;
     }
 }

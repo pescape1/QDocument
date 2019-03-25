@@ -14,9 +14,9 @@ namespace QDocument.Data
         {
         }
 
-        public DbSet<QDocument.Data.Models.Document> Documents { get; set; }
-        public DbSet<QDocument.Data.Models.User> User { get; set; }
-        public DbSet<QDocument.Data.Models.Job> Jobs { get; set; }
+        public DbSet<Document> Documents { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<Job> Jobs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,8 +24,8 @@ namespace QDocument.Data
             modelBuilder.Entity<Document>().ToTable("Document");
             modelBuilder.Entity<Job>().ToTable("Job");
 
-            //modelBuilder.Entity<DocumentApproval>()
-            //    .HasKey(c => new { c.DocumentID, c.UserId });
+            modelBuilder.Entity<DocumentApproval>()
+                .HasKey(c => new { c.DocumentID, c.JobID });
         }
     }
 }

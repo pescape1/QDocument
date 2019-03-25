@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using QDocument.Data.CustomAttributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,6 +22,8 @@ namespace QDocument.Data.Models
         public int ID { get; set; }
         [Required(ErrorMessage = "Title is required.")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "{0} must be between 3 and 50 characters lenght.")]
+        [Remote("DoesTitleExistAsync", "Documents", AdditionalFields = "ID", HttpMethod = "POST", ErrorMessage = "Title already exists. Please enter a different title.")]
+        //[UniqueDocumentTitle(ErrorMessage = "Title already exist.")]  //"ID", 
         public string Title { get; set; }
         [Display(Name = "Document Type")]
         [Required(ErrorMessage = "Valid Document Type value is required.")]

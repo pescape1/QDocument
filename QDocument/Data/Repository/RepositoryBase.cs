@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QDocument.Data.Contracts;
+using QDocument.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +23,15 @@ namespace QDocument.Data.Repository
             return await _context.Set<T>().ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression)
+        public async Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression, params Expression<Func<T, object>>[] includes)
         {
-            return await _context.Set<T>().Where(expression).ToListAsync();
+            IQueryable<T> query = _context.Set<T>();
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            return await query.Where(expression).ToListAsync();
         }
 
         public void Create(T entity)

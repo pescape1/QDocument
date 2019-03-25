@@ -2,6 +2,15 @@
 
 @section Styles {
     <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <style>
+        [v-cloak] > * {
+            display: none;
+        }
+
+        [v-cloak]::before {
+            content: "loading...";
+        }
+    </style>
 }
 @{
     ViewData["Title"] = "Edit";
@@ -10,7 +19,7 @@
 <h4>Document</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12" id="app" v-cloak>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -32,14 +41,9 @@
             </div>
             <div class="form-group">
                 <label for="jobList" class="control-label">Approval Scheme</label>
-                <select id="jobList" class="form-control" multiple="multiple">
-                    @foreach (var job in ViewBag.JobList)
-                    {
-                        <option value="@job.Value">@job.Text</option>
-                    }
-                </select>
+                @Html.DropDownList("jobList", (MultiSelectList)ViewBag.JobList, new { multiple = "multiple", @class = "form-control" })
             </div>
-            <div id="app">
+            <div class="form-group">
                 <approval-users :jlist="'#jobList'"></approval-users>
             </div>
             <div class="form-group">
