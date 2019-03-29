@@ -33,8 +33,10 @@ namespace QDocument.Data.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Creation Date")]
-        public DateTime CreationDate { get; set; }
+        public DateTime CreationDate { get; set; } = DateTime.Today;
+        public string UserId { get; set; }
 
+        public User user;
         public ICollection<DocumentApproval> ApprovedBy { get; set; }
     }
 }

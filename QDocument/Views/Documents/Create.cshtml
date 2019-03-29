@@ -35,11 +35,6 @@
                 <span asp-validation-for="DocumentType" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreationDate" class="control-label"></label>
-                <input asp-for="CreationDate" class="form-control" />
-                <span asp-validation-for="CreationDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label for="jobList" class="control-label">Approval Scheme</label>
                 @Html.DropDownList("jobList", (MultiSelectList)ViewBag.JobList, new { multiple = "multiple", @class = "form-control" })
             </div>

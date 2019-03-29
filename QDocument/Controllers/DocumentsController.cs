@@ -17,13 +17,13 @@ namespace QDocument.Controllers
     public class DocumentsController : Controller
     {
         //private readonly ApplicationDbContext _context;
-        //private readonly UserManager<User> userManager;
+        private readonly UserManager<User> _userManager;
         private IRepositoryWrapper _repoWrapper;
 
-        public DocumentsController(IRepositoryWrapper repoWrapper) //ApplicationDbContext context,UserManager<User> userMgr,  
+        public DocumentsController(IRepositoryWrapper repoWrapper, UserManager<User> userManager) //ApplicationDbContext context,  
         {
             //_context = context;
-            //userManager = userMgr;
+            _userManager = userManager;
             _repoWrapper = repoWrapper;
         }
 
@@ -67,6 +67,8 @@ namespace QDocument.Controllers
         {
             if (ModelState.IsValid)
             {
+                User user = await _userManager.GetUserAsync(User);
+                document.UserId = user.Id;
                 await _repoWrapper.Document.CreateDocumentAsync(document, jobList);
 
                 return RedirectToAction(nameof(Index));

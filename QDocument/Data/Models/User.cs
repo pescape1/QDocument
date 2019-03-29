@@ -10,5 +10,7 @@ namespace QDocument.Data.Models
     public class User : UserBase
     {
         public Job Job { get; set; }
+
+        public ICollection<Document> CreatedDocuments { get; set; }
     }
 }
