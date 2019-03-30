@@ -24,6 +24,9 @@ namespace QDocument.Controllers
         {
             UserName = "TestTestForPassword",
             Email = "testForPassword@test.test",
+            FirstName = "Firstname",
+            LastName = "Lastname",
+            Address = "Any address",
             JobID = 0
         };
 

@@ -42,7 +42,7 @@ namespace QDocument
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             //services.AddDefaultIdentity<User>()
-            services.AddIdentity<User, IdentityRole>(options =>
+            services.AddIdentity<User, Role>(options =>
                 {
                     // Password settings
                     options.Password.RequireDigit = false;

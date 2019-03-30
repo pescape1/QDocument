@@ -14,8 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\Migrations\20190307200950_AddedApprovals.cs" />
-    <Compile Remove="Data\Migrations\20190307200950_AddedApprovals.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190330135907_InitialCreate.cs" />
+    <Compile Remove="Data\Migrations\20190330135907_InitialCreate.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190330140236_InitialCreate.cs" />
+    <Compile Remove="Data\Migrations\20190330140236_InitialCreate.Designer.cs" />
   </ItemGroup>
 
 

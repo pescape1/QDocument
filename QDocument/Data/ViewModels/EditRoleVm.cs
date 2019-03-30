@@ -9,7 +9,7 @@ namespace QDocument.Data.ViewModels
 {
     public class EditRoleVm
     {
-        public IdentityRole Role { get; set; }
+        public Role Role { get; set; }
         public IEnumerable<User> Members { get; set; }
         public IEnumerable<User> NonMembers { get; set; }
     }

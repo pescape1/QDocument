@@ -63,12 +63,12 @@ namespace QDocument.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int[] jobList, [Bind("Title,DocumentType,CreationDate")] Document document)
+        public async Task<IActionResult> Create(int[] jobList, [Bind("Title,DocumentType")] Document document)
         {
             if (ModelState.IsValid)
             {
                 User user = await _userManager.GetUserAsync(User);
-                document.UserId = user.Id;
+                document.CreationUser = user.Id;
                 await _repoWrapper.Document.CreateDocumentAsync(document, jobList);
 
                 return RedirectToAction(nameof(Index));

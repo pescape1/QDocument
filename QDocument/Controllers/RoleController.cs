@@ -16,10 +16,10 @@ namespace QDocument.Controllers
     [Authorize]
     public class RoleController : Controller
     {
-        private RoleManager<IdentityRole> roleManager;
+        private RoleManager<Role> roleManager;
         private UserManager<User> userManager;
 
-        public RoleController(RoleManager<IdentityRole> roleMgr, UserManager<User> userMgr)
+        public RoleController(RoleManager<Role> roleMgr, UserManager<User> userMgr)
         {
             roleManager = roleMgr;
             userManager = userMgr;
@@ -49,7 +49,7 @@ namespace QDocument.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityResult result = await roleManager.CreateAsync(new IdentityRole(name));
+                IdentityResult result = await roleManager.CreateAsync(new Role { Name = name });
 
                 if (result.Succeeded)
                 {
@@ -66,7 +66,7 @@ namespace QDocument.Controllers
 
         public async Task<IActionResult> Edit(string id)
         {
-            IdentityRole role = await roleManager.FindByIdAsync(id);
+            Role role = await roleManager.FindByIdAsync(id);
             List<User> members = new List<User>();
             List<User> nonMember = new List<User>();
 
@@ -94,7 +94,7 @@ namespace QDocument.Controllers
 
             if (ModelState.IsValid)
             {
-                IdentityRole role = await roleManager.FindByIdAsync(modifyRole.RoleId);
+                Role role = await roleManager.FindByIdAsync(modifyRole.RoleId);
                 role.Name = modifyRole.RoleName;
                 result = await roleManager.UpdateAsync(role);
                 if (!result.Succeeded)
@@ -139,7 +139,7 @@ namespace QDocument.Controllers
 
         public async Task<IActionResult> Delete(string id)
         {
-            IdentityRole role = await roleManager.FindByIdAsync(id);
+            Role role = await roleManager.FindByIdAsync(id);
 
             if (role != null)
             {

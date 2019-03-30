@@ -16,9 +16,9 @@ namespace QDocument.Utilities.TagHelpers
     public class RoleUsersTagHelper : TagHelper
     {
         private UserManager<User> userManager;
-        private RoleManager<IdentityRole> roleManager;
+        private RoleManager<Role> roleManager;
 
-        public RoleUsersTagHelper(UserManager<User> userMgr, RoleManager<IdentityRole> roleMgr)
+        public RoleUsersTagHelper(UserManager<User> userMgr, RoleManager<Role> roleMgr)
         {
             userManager = userMgr;
             roleManager = roleMgr;
@@ -30,7 +30,7 @@ namespace QDocument.Utilities.TagHelpers
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             List<string> names = new List<string>();
-            IdentityRole role = await roleManager.FindByIdAsync(Role);
+            Role role = await roleManager.FindByIdAsync(Role);
             if (role != null)
             {
                 foreach (var user in userManager.Users)

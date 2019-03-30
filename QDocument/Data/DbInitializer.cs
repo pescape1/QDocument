@@ -27,7 +27,7 @@ namespace QDocument.Data
                 context.Jobs.Add(j);
             }
             context.SaveChanges();
-
+            /*
             var documents = new Document[]
             {
                 new Document { Title = "Control de Documentos", CreationDate = DateTime.Parse("2010-09-01"), DocumentType = DocumentType.Procedure }
@@ -37,7 +37,7 @@ namespace QDocument.Data
             {
                 context.Documents.Add(s);
             }
-            context.SaveChanges();
+            context.SaveChanges();*/
         }
     }
 }
