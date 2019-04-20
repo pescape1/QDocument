@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\dist\" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
 </Project>

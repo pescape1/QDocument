@@ -1,0 +1,37 @@
+﻿
+@model IEnumerable<QDocument.Data.Models.Document>
+ 
+<!DOCTYPE html>
+ 
+<html>
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <title>Import Documents</title>
+</head>
+<body>
+    @using (Html.BeginForm("Import", "Document", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input type="file" name="file" />
+        <input type="submit" value="Import"/>
+    }
+    @if (Model.Count() > 0)
+    {
+        <hr/>
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Document Type</th>
+            </tr>
+            @foreach (Document document in Model)
+            {
+                <tr>
+                    <td>@document.ID</td>
+                    <td>@document.Title</td>
+                    <td>@document.DocumentType</td>
+                </tr>
+            }
+        </table>
+    }
+</body>
+</html>

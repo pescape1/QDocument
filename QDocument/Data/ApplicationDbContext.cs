@@ -24,8 +24,15 @@ namespace QDocument.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Document>().ToTable("Document");
-            modelBuilder.Entity<Job>().ToTable("Job");
+            modelBuilder.Entity<Document>()
+                .ToTable("Document")
+                .HasIndex(d => d.Title).IsUnique();
+
+            modelBuilder.Entity<Job>()
+                .ToTable("Job")
+                .HasIndex(j => j.Title).IsUnique();
+            modelBuilder.Entity<Job>()
+                .HasIndex(j => j.ShortTitle).IsUnique();
 
             modelBuilder.Entity<DocumentApproval>()
                 .HasKey(c => new { c.DocumentID, c.JobID });
